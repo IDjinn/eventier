@@ -1,11 +1,11 @@
-package idjinn.tools.api;
+package idjinn.tools.eventier;
 
 import java.util.List;
 
 public interface IEventHandler {
-    boolean registerEvents(List<Class<?>> classes);
+    void registerEvents(List<Class<?>> classes);
 
-    boolean unregisterEvents(List<Class<?>> classes);
+    void unregisterEvents(List<Class<?>> classes);
 
     <TListener> boolean subscribe(TListener listener);
 

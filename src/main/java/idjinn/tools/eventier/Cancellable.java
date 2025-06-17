@@ -1,4 +1,4 @@
-package idjinn.tools.api;
+package idjinn.tools.eventier;
 
 public interface Cancellable {
     boolean isCancelled();

@@ -1,11 +1,6 @@
-package idjinn.tools.core;
+package idjinn.tools.eventier;
 
 
-import idjinn.tools.api.Cancellable;
-import idjinn.tools.api.Event;
-import idjinn.tools.api.EventListenerPriority;
-import idjinn.tools.api.EventListener;
-import idjinn.tools.api.IEventHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -94,33 +89,29 @@ public class EventHandler implements IEventHandler {
         return listenerMethods;
     }
 
+    public void registerEventsFromPackage(final String packageName) throws IOException, ClassNotFoundException {
+        this.registerEvents(this.getClassesFromPackage(packageName));
+    }
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean registerEvents(final List<Class<?>> classes) {
-        try {
-            for (final var listenerMethod : this.getEventListenersOf(classes)) {
-                var eventType = Arrays.stream(listenerMethod.getParameterTypes()).findFirst();
-                if (eventType.isPresent() && Event.class.isAssignableFrom(eventType.get())) {
-                    final var listenerAnnotation = ((EventListener) Arrays.stream(listenerMethod.getDeclaredAnnotations()).filter(a -> a.annotationType().equals(EventListener.class)).findFirst().get());
-                    final var priority = listenerAnnotation.priority();
-                    final var listenCancelled = listenerAnnotation.listenCancelled();
-                    this.listeners.computeIfAbsent((Class<? extends Event>) eventType.get(), k -> new ArrayList<>()).add(new ListenerCallback(null, listenerMethod, priority, listenCancelled));
-                }
+    public void registerEvents(final List<Class<?>> classes) {
+        for (final var listenerMethod : this.getEventListenersOf(classes)) {
+            var eventType = Arrays.stream(listenerMethod.getParameterTypes()).findFirst();
+            if (eventType.isPresent() && Event.class.isAssignableFrom(eventType.get())) {
+                final var listenerAnnotation = ((EventListener) Arrays.stream(listenerMethod.getDeclaredAnnotations()).filter(a -> a.annotationType().equals(EventListener.class)).findFirst().get());
+                final var priority = listenerAnnotation.priority();
+                final var listenCancelled = listenerAnnotation.listenCancelled();
+                this.listeners.computeIfAbsent((Class<? extends Event>) eventType.get(), k -> new ArrayList<>()).add(new ListenerCallback(null, listenerMethod, priority, listenCancelled));
             }
-            for (var listenerMethods : this.listeners.values()) {
-                Collections.sort(listenerMethods);
-            }
-
-            return true;
-        } catch (Exception e) {
-            return false;
+        }
+        for (var listenerMethods : this.listeners.values()) {
+            Collections.sort(listenerMethods);
         }
     }
 
     @Override
-    public boolean unregisterEvents(final List<Class<?>> classes) {
-        return false;
+    public void unregisterEvents(final List<Class<?>> classes) {
     }
 
     @SuppressWarnings("unchecked")

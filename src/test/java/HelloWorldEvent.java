@@ -1,4 +1,4 @@
-import idjinn.tools.api.Event;
+import idjinn.tools.eventier.Event;
 
 public class HelloWorldEvent implements Event {
     public boolean flag;

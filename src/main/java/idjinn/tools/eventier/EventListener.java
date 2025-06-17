@@ -1,4 +1,4 @@
-package idjinn.tools.api;
+package idjinn.tools.eventier;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

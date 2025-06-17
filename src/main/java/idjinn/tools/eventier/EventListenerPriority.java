@@ -1,4 +1,4 @@
-package idjinn.tools.api;
+package idjinn.tools.eventier;
 
 public enum EventListenerPriority {
     Low,

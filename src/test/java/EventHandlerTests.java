@@ -1,6 +1,6 @@
-import idjinn.tools.api.EventListener;
-import idjinn.tools.api.EventListenerPriority;
-import idjinn.tools.core.EventHandler;
+import idjinn.tools.eventier.EventListener;
+import idjinn.tools.eventier.EventListenerPriority;
+import idjinn.tools.eventier.EventHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
